@@ -1,0 +1,32 @@
+name: Build and Deploy Node.js app to Azure Web App
+
+on:
+  push:
+    branches:
+      - main  # Cambia esto a tu rama de despliegue principal
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'  # Cambia esto a la versión de Node.js que uses
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build project
+      run: npm run build  # Cambia esto a tu script de build si es necesario
+
+    - name: Deploy to Azure Web App
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'tu-nombre-de-app'  # Reemplaza con el nombre de tu aplicación web en Azure
+        slot-name: 'production'
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
